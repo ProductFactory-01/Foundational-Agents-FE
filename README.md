@@ -84,6 +84,7 @@ yarn preview
 
 ## Project Structure
 
+```
 Fondational-Agents-FE/
 ├── node_modules/           # Dependencies
 ├── public/                 # Static assets
@@ -105,20 +106,10 @@ Fondational-Agents-FE/
 ├── package-lock.json      # Locked dependencies
 ├── README.md              # This file
 └── vite.config.js         # Vite configuration
+```
 
 ## Usage
 
-### Basic Research Flow
-
-1. **Enter Research Title**: Type your research topic (required)
-2. **Add Context** (Optional): Provide specific aspects or additional context
-3. **Select Research Depth**:
-   - Small: ½–1 page report
-   - Medium: 1–2 pages report
-   - Deep: 2–3 pages comprehensive report
-4. **Set Number of Sources**: Choose 1-20 sources (default: 5)
-5. **Click "Run Research"**: Generate your research report
-6. **Optional: Get Videos**: Click "Get Videos" for related video content
 
 ### Sample Research Topics
 
@@ -127,79 +118,6 @@ Fondational-Agents-FE/
 - "Remote Learning Technologies Post-Pandemic"
 - "Cryptocurrency Adoption in Traditional Finance"
 - "Quantum Computing Applications"
-
-## API Integration
-
-The frontend expects the following backend endpoints:
-
-### Research Endpoint
-```
-POST /research/run
-Content-Type: application/json
-
-{
-  "title": "string",
-  "brief": "string | null",
-  "length": "small" | "medium" | "deep",
-  "top_k": number
-}
-
-Response: {
-  "content": "string",
-  "sources": [
-    {
-      "title": "string",
-      "url": "string"
-    }
-  ]
-}
-```
-
-### Videos Endpoint
-```
-POST /research/videos
-Content-Type: application/json
-
-{
-  "title": "string",
-  "top_k": number
-}
-
-Response: {
-  "videos": [
-    {
-      "title": "string",
-      "url": "string"
-    }
-  ]
-}
-```
-
-## Customization
-
-### Changing Colors
-
-The application uses a minimal color palette. To customize:
-
-1. **Primary Action Color**: Change `bg-blue-600` to your preferred Tailwind color
-2. **Secondary Action Color**: Change `bg-gray-900` to your preferred color
-3. **Text Colors**: Modify `text-gray-900`, `text-gray-700`, etc.
-
-### Modifying Layout
-
-The layout uses Tailwind's responsive utilities:
-- `max-w-7xl`: Maximum container width
-- `sm:`, `md:`, `lg:`: Responsive breakpoints
-- Adjust padding with `px-4 sm:px-6 lg:px-8`
-
-## Troubleshooting
-
-### CORS Issues
-If you encounter CORS errors, ensure your backend has proper CORS configuration:
-```javascript
-// Backend should allow requests from your frontend origin
-Access-Control-Allow-Origin: http://localhost:5173
-```
 
 ### API Connection Failed
 1. Verify the `API_BASE_URL` in your `.env` file
@@ -218,7 +136,3 @@ npm install
 rm -rf .vite
 npm run dev
 ```
-
-
-
-**Note**: Make sure your backend API is running and properly configured before using this frontend application.

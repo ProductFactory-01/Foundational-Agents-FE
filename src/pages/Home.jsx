@@ -10,6 +10,9 @@ export default function Home() {
     const handleV2Click = () => {
         window.location.href = '/deep-research-v2';
     };
+    const handleV3Click = () => {
+        window.location.href = '/policy-suggest';
+    };
 
     return (
         <div className="min-h-screen bg-white">
@@ -84,7 +87,7 @@ export default function Home() {
                         </button>
                     </div>
                     <div
-                        onClick={handleV2Click}
+                        onClick={handleV3Click}
                         className="bg-white rounded-md border border-gray-100 hover:border-gray-300 hover:shadow-sm transition-all cursor-pointer p-5"
                     >
                         <div className="flex items-center gap-2 mb-3">

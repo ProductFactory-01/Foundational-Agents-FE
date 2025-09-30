@@ -1,8 +1,9 @@
-
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Search, FileText, Video, ExternalLink, Loader2, AlertCircle, BookOpen } from 'lucide-react';
+import { Search, FileText, Video, ExternalLink, Loader2, AlertCircle, BookOpen, ArrowLeft } from 'lucide-react';
 
 export default function DeepResearchAgent() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [brief, setBrief] = useState('');
   const [length, setLength] = useState('medium');
@@ -68,7 +69,7 @@ export default function DeepResearchAgent() {
     setVideos(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/research/run`, {
+      const response = await fetch(`${API_BASE_URL}/v2/research/run`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,11 +83,12 @@ export default function DeepResearchAgent() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch research data');
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to fetch research data');
       }
 
       const data = await response.json();
-      setResult(data);
+      setResult(data.data); // Extract data from { success: true, data: {...} }
     } catch (err) {
       console.error(err);
       setError(err.message || 'An error occurred while fetching research data');
@@ -105,7 +107,7 @@ export default function DeepResearchAgent() {
     setError('');
 
     try {
-      const response = await fetch(`${API_BASE_URL}/research/videos`, {
+      const response = await fetch(`${API_BASE_URL}/v2/research/videos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,11 +119,12 @@ export default function DeepResearchAgent() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch videos');
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to fetch videos');
       }
 
       const data = await response.json();
-      setVideos(data.videos);
+      setVideos(data.data.videos); // Extract videos from { success: true, data: { videos: [...] } }
     } catch (err) {
       console.error(err);
       setError(err.message || 'An error occurred while fetching videos');
@@ -137,16 +140,25 @@ export default function DeepResearchAgent() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center gap-3">
-            <div className="bg-blue-600 p-2.5 rounded-lg">
-              <Search className="w-6 h-6 text-white" />
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-600 p-2.5 rounded-lg">
+                <Search className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  Deep Research Agent
+                </h1>
+                <p className="text-sm text-gray-600 mt-0.5">AI-powered research assistant for comprehensive analysis</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                Deep Research Agent
-              </h1>
-              <p className="text-sm text-gray-600 mt-0.5">AI-powered research assistant for comprehensive analysis</p>
-            </div>
+            <button
+              onClick={() => navigate('/')}
+              className="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Back
+            </button>
           </div>
         </div>
       </header>
@@ -204,9 +216,9 @@ export default function DeepResearchAgent() {
                 <input
                   type="number"
                   value={topK}
-                  onChange={(e) => setTopK(Math.max(1, Math.min(20, Number(e.target.value))))}
+                  onChange={(e) => setTopK(Math.max(1, Math.min(10, Number(e.target.value))))}
                   min={1}
-                  max={20}
+                  max={10}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
                 />
               </div>

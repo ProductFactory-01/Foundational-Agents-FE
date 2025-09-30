@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom';
+
 import React, { useState } from 'react';
-import { Search, FileText, Video, ExternalLink, Loader2, AlertCircle, BookOpen, ArrowLeft } from 'lucide-react';
+import { Search, FileText, Video, ExternalLink, Loader2, AlertCircle, BookOpen } from 'lucide-react';
 
 export default function DeepResearchAgent() {
-  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [brief, setBrief] = useState('');
   const [length, setLength] = useState('medium');
@@ -136,28 +135,18 @@ export default function DeepResearchAgent() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="bg-blue-600 p-2.5 rounded-lg">
-                <Search className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                  Deep Research Agent
-                </h1>
-                <p className="text-sm text-gray-600 mt-0.5">AI-powered research assistant for comprehensive analysis</p>
-              </div>
+          <div className="flex items-center gap-3">
+            <div className="bg-blue-600 p-2.5 rounded-lg">
+              <Search className="w-6 h-6 text-white" />
             </div>
-            <button
-              onClick={() => navigate('/')}
-              className="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              Back
-            </button>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                Deep Research Agent
+              </h1>
+              <p className="text-sm text-gray-600 mt-0.5">AI-powered research assistant for comprehensive analysis</p>
+            </div>
           </div>
         </div>
       </header>

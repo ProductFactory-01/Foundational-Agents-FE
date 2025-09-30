@@ -1,8 +1,9 @@
-
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Search, FileText, ExternalLink, Loader2, AlertCircle } from 'lucide-react';
+import { Search, FileText, ExternalLink, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 
 export default function PolicySuggestionAgent() {
+    const navigate = useNavigate();
     const [query, setQuery] = useState('');
     const [context, setContext] = useState('');
     const [response, setResponse] = useState(null);
@@ -55,18 +56,27 @@ export default function PolicySuggestionAgent() {
             {/* Header */}
             <header className="bg-white border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                    <div className="flex items-center gap-3">
-                        <div className="bg-blue-600 p-2.5 rounded-lg">
-                            <Search className="w-6 h-6 text-white" />
+                    <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-blue-600 p-2.5 rounded-lg">
+                                <Search className="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                                    Policy Advisor
+                                </h1>
+                                <p className="text-sm text-gray-600 mt-0.5">
+                                    AI-powered policy advice for government regulations
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                                Policy Advisor
-                            </h1>
-                            <p className="text-sm text-gray-600 mt-0.5">
-                                AI-powered policy advice for government regulations
-                            </p>
-                        </div>
+                        <button
+                            onClick={() => navigate('/')}
+                            className="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                        >
+                            <ArrowLeft className="w-5 h-5" />
+                            Back
+                        </button>
                     </div>
                 </div>
             </header>

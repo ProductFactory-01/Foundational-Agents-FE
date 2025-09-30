@@ -1,5 +1,4 @@
 
-
 import React, { useState } from 'react';
 import { Search, FileText, Video, ExternalLink, Loader2, AlertCircle, BookOpen } from 'lucide-react';
 
@@ -26,26 +25,20 @@ export default function DeepResearchAgent() {
     for (let line of lines) {
       line = line.trim();
 
-      // Skip empty lines
       if (!line) continue;
 
-      // Check if it's a section header (## or ###)
       if (line.startsWith('###') || line.startsWith('##')) {
-        // Save previous section if it has content
         if (currentSection.title || currentSection.content.length > 0) {
           sections.push(currentSection);
         }
-        // Start new section
         currentSection = {
           title: line.replace(/^#{2,3}\s*/, '').replace(/\*\*/g, ''),
           content: []
         };
       } else {
-        // Regular content line - clean markdown
         const cleanLine = line
-          .replace(/\*\*/g, '') // Remove bold markers
+          .replace(/\*\*/g, '')
           .replace(/\[Source \d+(?:,\s*\d+)*\]/g, (match) => {
-            // Convert [Source 1, 2] to superscript numbers
             const nums = match.match(/\d+/g);
             return nums ? nums.map(n => `[${n}]`).join('') : '';
           });
@@ -56,7 +49,6 @@ export default function DeepResearchAgent() {
       }
     }
 
-    // Add last section
     if (currentSection.title || currentSection.content.length > 0) {
       sections.push(currentSection);
     }
@@ -141,68 +133,72 @@ export default function DeepResearchAgent() {
   const sections = result ? parseContent(result.content) : [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-xl shadow-lg">
-              <Search className="w-8 h-8 text-white" />
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-blue-600 p-2.5 rounded-lg">
+              <Search className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Deep Research Agent
-            </h1>
-          </div>
-          <p className="text-slate-600 text-lg">AI-powered research assistant for comprehensive analysis</p>
-        </div>
-
-        {/* Main Input Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6 border border-slate-100">
-          <div className="space-y-6">
             <div>
-              <label className="block text-sm font-bold text-slate-800 mb-3">
-                Research Title *
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                Deep Research Agent
+              </h1>
+              <p className="text-sm text-gray-600 mt-0.5">AI-powered research assistant for comprehensive analysis</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Input Form */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
+                Research Title <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., The Impact of AI on Healthcare"
-                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-slate-800 mb-3">
-                Brief / Context (Optional)
+              <label className="block text-sm font-medium text-gray-900 mb-2">
+                Brief / Context <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
               <textarea
                 value={brief}
                 onChange={(e) => setBrief(e.target.value)}
                 placeholder="Provide additional context or specific aspects you want to focus on..."
                 rows={4}
-                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-none text-gray-900"
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-bold text-slate-800 mb-3">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   Research Depth
                 </label>
                 <select
                   value={length}
                   onChange={(e) => setLength(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
                 >
-                  <option value="small">Small (½–1 page)</option>
-                  <option value="medium">Medium (1–2 pages)</option>
-                  <option value="deep">Deep (2–3 pages)</option>
+                  <option value="small">Small</option>
+                  <option value="medium">Medium</option>
+                  <option value="deep">Deep</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-800 mb-3">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   Number of Sources
                 </label>
                 <input
@@ -211,16 +207,16 @@ export default function DeepResearchAgent() {
                   onChange={(e) => setTopK(Math.max(1, Math.min(20, Number(e.target.value))))}
                   min={1}
                   max={20}
-                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
                 />
               </div>
             </div>
 
-            <div className="flex gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button
                 onClick={handleResearch}
                 disabled={loading}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold px-6 py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:from-slate-400 disabled:to-slate-400 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                className="flex-1 bg-blue-600 text-white font-medium px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
@@ -238,14 +234,14 @@ export default function DeepResearchAgent() {
               <button
                 onClick={handleGetVideos}
                 disabled={loadingVideos || !title}
-                className="bg-gradient-to-r from-red-600 to-pink-600 text-white font-bold px-8 py-4 rounded-xl hover:from-red-700 hover:to-pink-700 disabled:from-slate-400 disabled:to-slate-400 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
+                className="sm:w-auto bg-gray-900 text-white font-medium px-6 py-3 rounded-lg hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
               >
                 {loadingVideos ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
                   <Video className="w-5 h-5" />
                 )}
-                Videos
+                Get Videos
               </button>
             </div>
           </div>
@@ -253,11 +249,11 @@ export default function DeepResearchAgent() {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 mb-6 flex items-start gap-3">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
             <div>
-              <h3 className="font-bold text-red-800">Error</h3>
-              <p className="text-red-600 text-sm">{error}</p>
+              <h3 className="font-medium text-red-900">Error</h3>
+              <p className="text-red-700 text-sm mt-1">{error}</p>
             </div>
           </div>
         )}
@@ -266,23 +262,23 @@ export default function DeepResearchAgent() {
         {result && sections.length > 0 && (
           <div className="space-y-6">
             {/* Research Content */}
-            <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 flex items-center gap-3">
-                <BookOpen className="w-6 h-6 text-white" />
-                <h2 className="text-2xl font-bold text-white">Research Report</h2>
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+              <div className="border-b border-gray-200 px-6 py-4 flex items-center gap-3">
+                <BookOpen className="w-5 h-5 text-gray-700" />
+                <h2 className="text-xl font-semibold text-gray-900">Research Report</h2>
               </div>
 
-              <div className="p-8">
+              <div className="p-6 sm:p-8">
                 {sections.map((section, idx) => (
                   <div key={idx} className="mb-8 last:mb-0">
                     {section.title && (
-                      <h3 className="text-2xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-200">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
                         {section.title}
                       </h3>
                     )}
                     <div className="space-y-4">
                       {section.content.map((paragraph, pIdx) => (
-                        <p key={pIdx} className="text-slate-700 leading-relaxed text-lg">
+                        <p key={pIdx} className="text-gray-700 leading-relaxed">
                           {paragraph}
                         </p>
                       ))}
@@ -294,32 +290,34 @@ export default function DeepResearchAgent() {
 
             {/* Sources */}
             {result.sources && result.sources.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-4 flex items-center gap-3">
-                  <ExternalLink className="w-6 h-6 text-white" />
-                  <h2 className="text-2xl font-bold text-white">Sources & References</h2>
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div className="border-b border-gray-200 px-6 py-4 flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-gray-700" />
+                  <h2 className="text-xl font-semibold text-gray-900">Sources & References</h2>
                 </div>
 
-                <div className="p-6 space-y-3">
-                  {result.sources.map((source, idx) => (
-                    <div key={idx} className="flex items-start gap-4 p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl hover:from-slate-100 hover:to-slate-200 transition-all border border-slate-200">
-                      <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow">
-                        {idx + 1}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <a
-                          href={source.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800 font-semibold hover:underline block"
-                        >
-                          {source.title || source.url}
-                        </a>
-                        <p className="text-sm text-slate-500 mt-1 truncate">{source.url}</p>
+                <div className="p-6">
+                  <div className="space-y-3">
+                    {result.sources.map((source, idx) => (
+                      <div key={idx} className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200">
+                        <span className="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                          {idx + 1}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <a
+                            href={source.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 font-medium hover:underline block break-words"
+                          >
+                            {source.title || source.url}
+                          </a>
+                          <p className="text-sm text-gray-500 mt-1 break-all">{source.url}</p>
+                        </div>
+                        <ExternalLink className="w-4 h-4 text-gray-400 flex-shrink-0 mt-1" />
                       </div>
-                      <ExternalLink className="w-5 h-5 text-slate-400 flex-shrink-0" />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -328,36 +326,38 @@ export default function DeepResearchAgent() {
 
         {/* Videos */}
         {videos && videos.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden mt-6">
-            <div className="bg-gradient-to-r from-red-600 to-pink-600 px-6 py-4 flex items-center gap-3">
-              <Video className="w-6 h-6 text-white" />
-              <h2 className="text-2xl font-bold text-white">Related Videos</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-6">
+            <div className="border-b border-gray-200 px-6 py-4 flex items-center gap-3">
+              <Video className="w-5 h-5 text-gray-700" />
+              <h2 className="text-xl font-semibold text-gray-900">Related Videos</h2>
             </div>
 
-            <div className="p-6 space-y-3">
-              {videos.map((video, idx) => (
-                <div key={idx} className="flex items-start gap-4 p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl hover:from-red-100 hover:to-pink-100 transition-all border border-red-200">
-                  <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow">
-                    {idx + 1}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <a
-                      href={video.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-red-600 hover:text-red-800 font-semibold hover:underline block"
-                    >
-                      {video.title || video.url}
-                    </a>
-                    <p className="text-sm text-slate-500 mt-1 truncate">{video.url}</p>
+            <div className="p-6">
+              <div className="space-y-3">
+                {videos.map((video, idx) => (
+                  <div key={idx} className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200">
+                    <span className="flex-shrink-0 w-7 h-7 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                      {idx + 1}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <a
+                        href={video.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 font-medium hover:underline block break-words"
+                      >
+                        {video.title || video.url}
+                      </a>
+                      <p className="text-sm text-gray-500 mt-1 break-all">{video.url}</p>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-gray-400 flex-shrink-0 mt-1" />
                   </div>
-                  <ExternalLink className="w-5 h-5 text-slate-400 flex-shrink-0" />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }
